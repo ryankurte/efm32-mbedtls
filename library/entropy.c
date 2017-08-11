@@ -49,12 +49,16 @@
 #include "mbedtls/havege.h"
 #endif
 
+#if !defined(MBEDTLS_ENTROPY_FREE_ALT)
 /* Implementation that should never be optimized out by the compiler */
 static void mbedtls_zeroize( void *v, size_t n ) {
     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
 }
+#endif
 
 #define ENTROPY_MAX_LOOP    256     /**< Maximum amount to loop before error */
+
+#if !defined(MBEDTLS_ENTROPY_INIT_ALT)
 
 void mbedtls_entropy_init( mbedtls_entropy_context *ctx )
 {
@@ -67,6 +71,7 @@ void mbedtls_entropy_init( mbedtls_entropy_context *ctx )
 #if defined(MBEDTLS_ENTROPY_SHA512_ACCUMULATOR)
     mbedtls_sha512_starts( &ctx->accumulator, 0 );
 #else
+    mbedtls_sha256_init( &ctx->accumulator );
     mbedtls_sha256_starts( &ctx->accumulator, 0 );
 #endif
 #if defined(MBEDTLS_HAVEGE_C)
@@ -97,6 +102,10 @@ void mbedtls_entropy_init( mbedtls_entropy_context *ctx )
 #endif /* MBEDTLS_NO_DEFAULT_ENTROPY_SOURCES */
 }
 
+#endif /* #if !defined(MBEDTLS_ENTROPY_INIT_ALT) */
+
+#if !defined(MBEDTLS_ENTROPY_FREE_ALT)
+
 void mbedtls_entropy_free( mbedtls_entropy_context *ctx )
 {
 #if defined(MBEDTLS_HAVEGE_C)
@@ -107,6 +116,8 @@ void mbedtls_entropy_free( mbedtls_entropy_context *ctx )
 #endif
     mbedtls_zeroize( ctx, sizeof( mbedtls_entropy_context ) );
 }
+
+#endif /* #if !defined(MBEDTLS_ENTROPY_FREE_ALT) */
 
 int mbedtls_entropy_add_source( mbedtls_entropy_context *ctx,
                         mbedtls_entropy_f_source_ptr f_source, void *p_source,
@@ -320,7 +331,7 @@ int mbedtls_entropy_func( void *data, unsigned char *output, size_t len )
     /*
      * Reset accumulator and counters and recycle existing entropy
      */
-    memset( &ctx->accumulator, 0, sizeof( mbedtls_sha256_context ) );
+    mbedtls_sha256_init( &ctx->accumulator );
     mbedtls_sha256_starts( &ctx->accumulator, 0 );
     mbedtls_sha256_update( &ctx->accumulator, buf, MBEDTLS_ENTROPY_BLOCK_SIZE );
 

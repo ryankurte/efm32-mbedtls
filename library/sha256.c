@@ -315,8 +315,6 @@ void mbedtls_sha256_finish( mbedtls_sha256_context *ctx, unsigned char output[32
         PUT_UINT32_BE( ctx->state[7], output, 28 );
 }
 
-#endif /* !MBEDTLS_SHA256_ALT */
-
 /*
  * output = SHA-256( input buffer )
  */
@@ -441,5 +439,7 @@ exit:
 }
 
 #endif /* MBEDTLS_SELF_TEST */
+
+#endif /* !MBEDTLS_SHA256_ALT */
 
 #endif /* MBEDTLS_SHA256_C */

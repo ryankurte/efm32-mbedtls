@@ -344,8 +344,6 @@ void mbedtls_sha1_finish( mbedtls_sha1_context *ctx, unsigned char output[20] )
     PUT_UINT32_BE( ctx->state[4], output, 16 );
 }
 
-#endif /* !MBEDTLS_SHA1_ALT */
-
 /*
  * output = SHA-1( input buffer )
  */
@@ -444,5 +442,7 @@ exit:
 }
 
 #endif /* MBEDTLS_SELF_TEST */
+
+#endif /* !MBEDTLS_SHA1_ALT */
 
 #endif /* MBEDTLS_SHA1_C */

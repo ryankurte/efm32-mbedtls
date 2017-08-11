@@ -54,6 +54,23 @@
  * Note that mbed TLS does not provide a control channel or (multiple) session
  * handling without additional work from the developer.
  *
+ * @section mainpage_sl_plugins Silicon Labs Plugins
+ *
+ * @subsection mainpage_sl_crypto_plugins Cryptography Hardware Acceleration Plugin
+
+ * Silicon Labs plugins utilizing cryptography hardware acceleration are provided in this
+ * mbed TLS package. These plugins and their configurations are documented in
+ * @ref sl_crypto and @ref sl_crypto_config. There are two classes of cryptography hardware 
+ * acceleration plugins; plugins optimized for single-threaded applications and advanced plugins
+ * supporting sharing of CRYPTO accelerators in multi-threaded applications.
+ *
+ * @subsection mainpage_sl_rng_plugins Random Number Plugin
+ * 
+ * A True Random Number Generator (TRNG) plugin is provided in this mbed TLS package. 
+ * More documentation can be found here @ref rng_module.
+ *  
+ * 
+ *
  * @section mainpage_examples Examples
  *
  * Example server setup:
